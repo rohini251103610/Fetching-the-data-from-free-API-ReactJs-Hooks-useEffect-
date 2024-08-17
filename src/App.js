@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import ReactDOM from'react-dom';
+import React,{useState,useEffect}from 'react';
+function Userdemo(){
+    const[users,setUsers]=useState([]);
+    const[loading,setLoading]=useState(true);
+    useEffect(()=>{
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response=>response.json())
+        .then(data=>{setUsers(data);
+        setLoading(false);
+        })
+        .catch(error => {
+            console.log("if it is not loading will be error message");
+            setLoading(false);
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        });
+},[]);
+if(loading){
+    return <p>loading</p>
 }
+return(
+    <div>
+        <h1>List out the users in API</h1>
+        <ul>
+            {users.map(user=>(<li key={user.id}>{user.name}</li>
+        ))}
+        </ul>
+    </div>
+);
+}
+ReactDOM.render(<Userdemo/>,document.getElementById('root'));
 
-export default App;
+export default Userdemo;
+
+
